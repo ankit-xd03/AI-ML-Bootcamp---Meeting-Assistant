@@ -2,7 +2,7 @@
 
 An AI-powered meeting assistant built for the Inter IIT Tech Meet 15.0 Bootcamp (Phase 2, ML PS).
 
-**Live app:** https://YOUR-APP-NAME.streamlit.app
+**Live app:** https://ai-ml-bootcamp---meeting-assistant-bbam8rlepwxnroebhsa267.streamlit.app
 
 Upload an English meeting recording and TalkToTasks produces:
 
@@ -19,6 +19,7 @@ Audio -> [1] Speech-to-text -> [2] LLM #1: transcript refiner -> [3] LLM #2: min
 ```
 
 | Stage | Role | Model |
+|---|---|---|
 | 1 | Speech-to-text | AssemblyAI (default, speaker labels, glossary boost). Fallback: faster-whisper `small` (local, CPU) |
 | 2 | Transcript refinement (LLM #1) | `openai/gpt-oss-120b` via Groq |
 | 3 | Minutes, decisions, action items (LLM #2) | `openai/gpt-oss-120b` via Groq (separate prompt, call and setting) |
@@ -28,7 +29,7 @@ Each stage has its own prompt in `prompts/` and its own model setting (Streamlit
 
 ## Use the deployed app
 
-Open https://YOUR-APP-NAME.streamlit.app. No installation or API keys are needed on your side; the keys are stored in the app's Streamlit Secrets.
+Open https://ai-ml-bootcamp---meeting-assistant-bbam8rlepwxnroebhsa267.streamlit.app. No installation or API keys are needed on your side; the keys are stored in the app's Streamlit Secrets.
 
 1. Upload a recording (`.mp3 .wav .m4a .mp4 .flac .ogg .webm .aac .aiff`), or click **Or try the sample meeting**.
 2. Optionally open **+ Glossary** and enter domain terms (for example `Kubernetes, PyTorch, CI pipeline`) to help the speech model and the refiner.
@@ -37,21 +38,7 @@ Open https://YOUR-APP-NAME.streamlit.app. No installation or API keys are needed
 5. Inspect the results in the tabs: Overview, Transcripts (raw and refined side by side with the edits highlighted), Minutes, Decisions & Actions (with evidence quotes), and Downloads.
 6. Download the files individually or as one zip. Runs from the current session can be reopened from **Recent Meetings** in the sidebar.
 
-## Deploy your own copy (Streamlit Community Cloud)
 
-1. Push this repository to GitHub. Do not push `.env` or `venv/`.
-2. Go to https://share.streamlit.io, sign in with GitHub and click **Create app**.
-3. Select the repository, branch `main` and main file `app.py`.
-4. Open **Advanced settings -> Secrets** and add the keys:
-
-```toml
-GROQ_API_KEY = "your-groq-key"
-ASSEMBLYAI_API_KEY = "your-assemblyai-key"
-REFINER_MODEL = "openai/gpt-oss-120b"
-MINUTES_MODEL = "openai/gpt-oss-120b"
-```
-
-5. Click **Deploy**. `requirements.txt` installs the Python packages and `packages.txt` installs `ffmpeg` on the server.
 
 Secrets settings:
 
