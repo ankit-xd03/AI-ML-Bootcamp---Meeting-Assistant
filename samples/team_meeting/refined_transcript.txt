@@ -1,0 +1,5 @@
+[00:00] A: Okay everyone, let's get started. First topic is the API latency. Rahul, where are we?
+[00:06] B: This is Rahul. The page 95 latency is about 300 milliseconds right now, and the target is under 200.
+[00:14] A: I suggest we maybe move to Redis caching, but we haven't decided that yet. Okay, let's not decide on Redis today. For the database, let's go with the current schema. We will not change it this sprint.
+[00:27] B: Fine. I will deploy the new CI pipeline by Friday.
+[00:32] A: Great. Someone needs to update the documentation. Also, we should probably think about load testing at some point. The PyTorch model needs 3 more days of training before we move it to Kubernetes. Priya will share the benchmark results with the team on Monday. Okay, that's all for today. Thanks everyone.
