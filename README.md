@@ -2,6 +2,8 @@
 
 An AI-powered meeting assistant built for the Inter IIT Tech Meet 15.0 Bootcamp (Phase 2, ML PS).
 
+**Live app:** https://YOUR-APP-NAME.streamlit.app
+
 Upload an English meeting recording and TalkToTasks produces:
 
 - a **raw transcript** (speech-to-text),
@@ -22,16 +24,47 @@ Audio -> [1] Speech-to-text -> [2] LLM #1: transcript refiner -> [3] LLM #2: min
 | 3 | Minutes, decisions, action items (LLM #2) | `openai/gpt-oss-120b` via Groq (separate prompt, call and setting) |
 | 4 | Verifier | Rule-based checks, no model |
 
-Each stage has its own prompt in `prompts/` and its own model setting in `.env`, so the two language-model stages can use different models. See `TECHNICAL_DESCRIPTION` for the full design.
+Each stage has its own prompt in `prompts/` and its own model setting (Streamlit Secrets on the deployed app, `.env` locally), so the two language-model stages can use different models. See `TECHNICAL_DESCRIPTION` for the full design.
 
-## Requirements
+## Use the deployed app
 
-- Python 3.10 or newer
-- `ffmpeg` available on your PATH
-- A [Groq](https://console.groq.com) API key (required, used by both language-model stages)
-- An [AssemblyAI](https://www.assemblyai.com) API key (optional; without it the app uses local Whisper)
+Open https://YOUR-APP-NAME.streamlit.app. No installation or API keys are needed on your side; the keys are stored in the app's Streamlit Secrets.
 
-Install ffmpeg:
+1. Upload a recording (`.mp3 .wav .m4a .mp4 .flac .ogg .webm .aac .aiff`), or click **Or try the sample meeting**.
+2. Optionally open **+ Glossary** and enter domain terms (for example `Kubernetes, PyTorch, CI pipeline`) to help the speech model and the refiner.
+3. Optionally open **Models** to choose the speech backend and the two language models.
+4. Click **Process**. Progress is shown for each of the three stages.
+5. Inspect the results in the tabs: Overview, Transcripts (raw and refined side by side with the edits highlighted), Minutes, Decisions & Actions (with evidence quotes), and Downloads.
+6. Download the files individually or as one zip. Runs from the current session can be reopened from **Recent Meetings** in the sidebar.
+
+## Deploy your own copy (Streamlit Community Cloud)
+
+1. Push this repository to GitHub. Do not push `.env` or `venv/`.
+2. Go to https://share.streamlit.io, sign in with GitHub and click **Create app**.
+3. Select the repository, branch `main` and main file `app.py`.
+4. Open **Advanced settings -> Secrets** and add the keys:
+
+```toml
+GROQ_API_KEY = "your-groq-key"
+ASSEMBLYAI_API_KEY = "your-assemblyai-key"
+REFINER_MODEL = "openai/gpt-oss-120b"
+MINUTES_MODEL = "openai/gpt-oss-120b"
+```
+
+5. Click **Deploy**. `requirements.txt` installs the Python packages and `packages.txt` installs `ffmpeg` on the server.
+
+Secrets settings:
+
+| Variable | Meaning |
+|---|---|
+| `GROQ_API_KEY` | Required. Used by the refiner and the minutes generator. |
+| `ASSEMBLYAI_API_KEY` | Recommended on the hosted app. If missing, local faster-whisper is used (slow and memory-heavy on the free tier). |
+| `REFINER_MODEL` | Model for stage 2. Default `openai/gpt-oss-120b`. |
+| `MINUTES_MODEL` | Model for stage 3. Default `openai/gpt-oss-120b`. |
+
+## Run locally (optional)
+
+Requirements: Python 3.10 or newer, `ffmpeg` on your PATH, a [Groq](https://console.groq.com) API key, and optionally an [AssemblyAI](https://www.assemblyai.com) API key.
 
 ```bash
 # macOS
@@ -41,8 +74,6 @@ sudo apt install ffmpeg
 # Windows
 winget install ffmpeg
 ```
-
-## Setup
 
 ```bash
 # 1. create and activate a virtual environment
@@ -54,36 +85,15 @@ pip install -r requirements.txt
 
 # 3. add your keys
 cp .env.example .env              # Windows: copy .env.example .env
-# then open .env and paste your keys
-```
+# then open .env and paste your keys (same variables as the Secrets table above)
 
-`.env` settings:
-
-| Variable | Meaning |
-|---|---|
-| `GROQ_API_KEY` | Required. Used by the refiner and the minutes generator. |
-| `ASSEMBLYAI_API_KEY` | Optional. If missing, local faster-whisper is used (the first run downloads the model). |
-| `REFINER_MODEL` | Model for stage 2. Default `openai/gpt-oss-120b`. |
-| `MINUTES_MODEL` | Model for stage 3. Default `openai/gpt-oss-120b`. |
-
-## Run the web app
-
-From the project root (the folder containing `app.py`):
-
-```bash
+# 4. start the app
 streamlit run app.py
 ```
 
-Then open the URL shown in the terminal (usually http://localhost:8501).
+Then open http://localhost:8501.
 
-1. Upload a recording (`.mp3 .wav .m4a .mp4 .flac .ogg .webm .aac .aiff`), or click **Or try the sample meeting**.
-2. Optionally open **+ Glossary** and enter domain terms (for example `Kubernetes, PyTorch, CI pipeline`) to help the speech model and the refiner.
-3. Optionally open **Models** to choose the speech backend and the two language models.
-4. Click **Process**. Progress is shown for each of the three stages.
-5. Inspect the results in the tabs: Overview, Transcripts (raw and refined side by side with the edits highlighted), Minutes, Decisions & Actions (with evidence quotes), and Downloads.
-6. Download the files individually or as one zip. Past runs can be reopened from **Recent Meetings** in the sidebar.
-
-## Run from the command line
+To run only the pipeline from the command line:
 
 ```bash
 python run_pipeline.py samples/team_meeting.wav
@@ -103,7 +113,7 @@ For each processed recording:
 | `meeting_record.json` | Machine-readable version of the same record, with evidence quotes, timestamps and `verified` flags |
 | `run_data.json` | Full run data used by the app to reopen past runs |
 
-The Markdown and JSON files are generated from the same record, so they always contain the same decisions and tasks.
+The Markdown and JSON files are generated from the same record, so they always contain the same decisions and tasks. On the deployed app, download them from the **Downloads** tab.
 
 ## How accuracy is protected
 
@@ -120,7 +130,7 @@ The app shows a clear message instead of crashing for: missing, empty or unsuppo
 
 ```
 app.py                 Streamlit interface
-.streamlit/config.toml Theme
+packages.txt           system packages for the server (ffmpeg)
 pipeline/
   stt.py               audio validation and speech-to-text (AssemblyAI / Whisper)
   refine.py            LLM #1: transcript refinement and edit guards
@@ -149,12 +159,14 @@ requirements.txt       dependencies
 - Speaker labels are generic (A, B); owners are recorded only when a name is spoken.
 - Local Whisper fallback has no speaker labels.
 - Only English audio is supported.
+- On the hosted app, the free tier has limited memory and the server filesystem is temporary: **Recent Meetings** history is cleared when the app restarts, so download your results after each run. Very long recordings may be slow or fail.
 
 ## Troubleshooting
 
 | Problem | Fix |
 |---|---|
-| `ffmpeg is not installed or not on PATH` | Install ffmpeg (see above) and restart the app |
-| `GROQ_API_KEY is not set` | Create `.env` from `.env.example` and add the key, then restart |
+| `ffmpeg is not installed or not on PATH` | Deployed: make sure `packages.txt` containing `ffmpeg` is in the repo root, then reboot the app. Local: install ffmpeg (see above) and restart. |
+| `GROQ_API_KEY is not set` | Deployed: add it under **Manage app -> Settings -> Secrets**. Local: create `.env` from `.env.example`, add the key and restart. |
 | "language model is busy or rate-limited" | Wait a minute and try again |
-| Theme looks different | Run `streamlit run app.py` from the project root so `.streamlit/config.toml` is found |
+| App stops or restarts on a long file | The free tier has limited memory. Use a shorter recording and set `ASSEMBLYAI_API_KEY` so local Whisper is not used. |
+| Sample meeting button does nothing | Make sure `samples/team_meeting.wav` is in the repo, or upload your own file |
