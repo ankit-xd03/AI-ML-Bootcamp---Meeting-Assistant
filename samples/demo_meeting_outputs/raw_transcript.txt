@@ -1,0 +1,32 @@
+[00:00] A: Okay everyone, let's get started. This is the launch readiness review for the backend. We only have a few minutes, so let's move quickly. First topic, API latency. Rahul, where are we?
+[00:11] B: Thanks, Mira. The page 95 latency on the transcription endpoint is currently around 450 milliseconds. Our target for launch is under 200. The main cause is the database query on every single request.
+[00:27] C: Um, I suggest we maybe add Redis caching in front of the database. I haven't benchmarked it, so it's only an idea for now.
+[00:34] A: Okay, let's not commit to Redis today. Rahul, can you run a benchmark and share the numbers?
+[00:41] B: Sure, I will benchmark Redis caching and share the results by Wednesday.
+[00:46] A: Great. Next, the database. Arjun, you wanted to move us from PostgreSQL to MongoDB.
+[00:55] D: Yes, I proposed it because most of our data is documents. But honestly, a migration this close to launch is risky.
+[01:03] A: Agreed. So the decision is, we stay on PostgreSQL for launch. We will not migrate the database this quarter.
+[01:11] D: Fine with me. We can talk about it again someday.
+[01:15] A: Next, authentication. Priya, can you take the OAuth login?
+[01:21] C: Yes, I'll finish the OAuth login by next Friday. I just need the final login screens from the design team.
+[01:27] A: Okay, someone needs to ask the design team for those screens.
+[01:32] B: Also, what if we drop the dark mode feature to save time?
+[01:37] A: Hmm, dark mode is nice to have, but let's not decide that today. We should look at customer feedback first. Now the CI/CD pipeline. Arjun, how is it going?
+[01:48] D: The new pipeline with Docker is almost ready. I will deploy it to staging by Thursday.
+[01:55] A: Actually, let's make that Tuesday because Rahul needs staging for the benchmark.
+[02:00] D: Okay, Tuesday works for me.
+[02:03] A: Next, load testing. Arjun, what do we need?
+[02:07] D: We should test with 10,000 concurrent users. I would suggest using Locust. We should probably also think about chaos testing at some point.
+[02:17] A: Good. Let's go with Locust. Arjun, please write the load test scripts. We will set a deadline once staging is up.
+[02:25] D: Sounds good.
+[02:27] A: Now the budget. Our cloud budget is $12,000 this month, and we have spent about $8,000 so far.
+[02:34] B: Then we have room. I'd like to add one extra GPU instance for the demo week.
+[02:41] A: Approved. We will add the extra GPU instance for the demo week. Documentation. The API docs are outdated, and someone needs to update them before launch. Anyone? No? Okay, let's come back to that. Before we wrap up, customer feedback. Priya, you spoke to the pilot customers.
+[03:01] C: Yes, 3 pilot customers asked for CSV export. Honestly, I think it matters more than dark mode.
+[03:08] A: Agreed. But we will not ship CSV export in the first release. It goes into version 2. Rahul, can you draft the export format after launch?
+[03:18] B: Sure. I'll draft the export format the week after launch.
+[03:23] A: Last topic. The demo date. Customers are waiting. I propose we hold the demo on the 20th of October. Does everyone agree?
+[03:33] B: Agreed.
+[03:33] C: Agreed.
+[03:35] D: Agreed.
+[03:36] A: Great. The demo is on the 20th of October. Thanks everyone. That's all for today.

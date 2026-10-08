@@ -1,0 +1,146 @@
+{
+  "summary": "The team reviewed launch readiness, covering API latency, database choice, authentication, CI/CD pipeline, load testing, budget, documentation, and demo scheduling. They decided to keep PostgreSQL, use Locust for load testing, add a GPU instance, postpone CSV export, and set the demo for October 20. Action items include benchmarking Redis, completing OAuth login, updating design screens, deploying the pipeline by Tuesday, writing load test scripts, updating API docs, and drafting the export format.",
+  "minutes": [
+    {
+      "topic": "API latency",
+      "discussion": "Current latency is ~450 ms, target under 200 ms; cause is a database query per request."
+    },
+    {
+      "topic": "Redis caching",
+      "discussion": "Suggested as an idea but not committed; benchmark to be run."
+    },
+    {
+      "topic": "Database migration",
+      "discussion": "Proposal to move to MongoDB deemed risky close to launch; decision to stay on PostgreSQL."
+    },
+    {
+      "topic": "Authentication/OAuth login",
+      "discussion": "Priya assigned to implement OAuth login, pending final design screens."
+    },
+    {
+      "topic": "Dark mode",
+      "discussion": "Considered dropping to save time, but decision deferred pending customer feedback."
+    },
+    {
+      "topic": "CI/CD pipeline",
+      "discussion": "Pipeline nearly ready; deployment to staging moved to Tuesday to support benchmark."
+    },
+    {
+      "topic": "Load testing",
+      "discussion": "Plan to test 10,000 concurrent users using Locust; scripts to be written."
+    },
+    {
+      "topic": "Budget",
+      "discussion": "Cloud budget $12k with $8k spent; approved addition of one extra GPU instance for demo week."
+    },
+    {
+      "topic": "Documentation",
+      "discussion": "API docs outdated; need update before launch."
+    },
+    {
+      "topic": "Customer feedback - CSV export",
+      "discussion": "Three pilots requested CSV export; decision not to ship in first release, will be added in version 2."
+    },
+    {
+      "topic": "Demo date",
+      "discussion": "Demo scheduled for 20th October after unanimous agreement."
+    }
+  ],
+  "decisions": [
+    {
+      "decision": "Stay on PostgreSQL for launch, no migration this quarter",
+      "evidence": "Agreed. So the decision is, we stay on PostgreSQL for launch. We will not migrate the database this quarter.",
+      "timestamp": "01:03",
+      "verified": true
+    },
+    {
+      "decision": "Use Locust for load testing",
+      "evidence": "Good. Let's go with Locust.",
+      "timestamp": "02:17",
+      "verified": true
+    },
+    {
+      "decision": "Deploy CI/CD pipeline to staging on Tuesday",
+      "evidence": "Actually, let's make that Tuesday because Rahul needs staging for the benchmark.",
+      "timestamp": "01:55",
+      "verified": true
+    },
+    {
+      "decision": "Add extra GPU instance for demo week",
+      "evidence": "Approved. We will add the extra GPU instance for the demo week.",
+      "timestamp": "02:41",
+      "verified": true
+    },
+    {
+      "decision": "Do not ship CSV export in first release",
+      "evidence": "Agreed. But we will not ship CSV export in the first release.",
+      "timestamp": "03:08",
+      "verified": true
+    },
+    {
+      "decision": "Demo scheduled for 20th of October",
+      "evidence": "Great. The demo is on the 20th of October.",
+      "timestamp": "03:36",
+      "verified": true
+    }
+  ],
+  "action_items": [
+    {
+      "task": "Benchmark Redis caching and share results",
+      "owner": "unspecified",
+      "deadline": "Wednesday",
+      "evidence": "Sure, I will benchmark Redis caching and share the results by Wednesday.",
+      "timestamp": "00:41",
+      "verified": true
+    },
+    {
+      "task": "Finish OAuth login",
+      "owner": "Priya",
+      "deadline": "next Friday",
+      "evidence": "Yes, I'll finish the OAuth login by next Friday.",
+      "timestamp": "01:21",
+      "verified": true
+    },
+    {
+      "task": "Ask design team for final login screens",
+      "owner": "unspecified",
+      "deadline": "unspecified",
+      "evidence": "someone needs to ask the design team for those screens.",
+      "timestamp": "01:27",
+      "verified": true
+    },
+    {
+      "task": "Deploy CI/CD pipeline to staging",
+      "owner": "Arjun",
+      "deadline": "Tuesday",
+      "evidence": "Actually, let's make that Tuesday because Rahul needs staging for the benchmark.",
+      "timestamp": "01:55",
+      "verified": true
+    },
+    {
+      "task": "Write load test scripts using Locust",
+      "owner": "Arjun",
+      "deadline": "unspecified",
+      "evidence": "Arjun, please write the load test scripts.",
+      "timestamp": "02:17",
+      "verified": true
+    },
+    {
+      "task": "Update API documentation before launch",
+      "owner": "unspecified",
+      "deadline": "unspecified",
+      "evidence": "someone needs to update them before launch.",
+      "timestamp": "02:41",
+      "verified": true
+    },
+    {
+      "task": "Draft export format after launch",
+      "owner": "unspecified",
+      "deadline": "the week after launch",
+      "evidence": "Sure. I'll draft the export format the week after launch.",
+      "timestamp": "03:18",
+      "verified": true
+    }
+  ],
+  "verification_notes": []
+}
