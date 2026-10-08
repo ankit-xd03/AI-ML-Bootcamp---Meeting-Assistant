@@ -27,6 +27,10 @@ Audio -> [1] Speech-to-text -> [2] LLM #1: transcript refiner -> [3] LLM #2: min
 
 Each stage has its own prompt in `prompts/` and its own model setting (Streamlit Secrets on the deployed app, `.env` locally), so the two language-model stages can use different models. See `TECHNICAL_DESCRIPTION` for the full design.
 
+## use this youtube link as a demo video for our app 
+Open https://youtu.be/K4My6NkD6Z8 . 
+All the steps to run locally or to use the deployed are mentioned in the demo video.
+
 ## Use the deployed app
 
 Open https://ai-ml-bootcamp---meeting-assistant-bbam8rlepwxnroebhsa267.streamlit.app. No installation or API keys are needed on your side; the keys are stored in the app's Streamlit Secrets.
